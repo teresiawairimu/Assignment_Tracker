@@ -40,6 +40,7 @@ const RegistrationForm = () => {
             const idToken = await user.getIdToken();
             console.log("User registered:", user);
             await registerUser({ username: data.username, email: data.email}, idToken );
+            navigate('/login');
             //reset(); // Reset the form after successful registration
         } catch (error) {
             setRegistrationErrors([error.message]);
