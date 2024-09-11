@@ -1,12 +1,13 @@
 import axios from 'axios';
+
 import api_base_url from './apiConfig';
 
-const user_api_url = `${api_base_url}/api/users`;
 
+const assignment_api_url = `${api_base_url}/api/assignments`;
 
-const registerUser = async (userData, idToken) => {
+const createAssignment = async (assignmentData, idToken) => {
     try {
-        const response = await axios.post(`${user_api_url}/register`, userData,
+        const response = await axios.post(`${assignment_api_url}/create`, assignmentData,
             {
                 headers: {
                     Authorization: `Bearer ${idToken}`,
@@ -15,74 +16,64 @@ const registerUser = async (userData, idToken) => {
                 withCredentials: true,
             }
         );
-        console.log(response.data);
+        console.log("create asignment response is:", response.data);
         return response.data;
-        
     } catch (error) {
         throw error;
     }
 }
 
-const getUserById = async (id, idToken) => {
+const getAssignmentById = async (userId, assignmentId, idToken) => {
     try {
-        const response = await axios.get(`${user_api_url}/${id}`,
+        const response = await axios.get(`${assignment_api_url}/${assignmentId}`,
             {
                 headers: {
                     Authorization: `Bearer ${idToken}`,
-                    'Content-Type': 'application/json',
                 },
                 withCredentials: true,
             }
         );
-        //console.log(response.data);
         return response.data;
-        
     } catch (error) {
         throw error;
     }
 }
 
-const updateUser = async (id, userData, idToken) => {
+const getAssignments = async (userId, idToken) => {
     try {
-        const response = await axios.put(`${user_api_url}/${id}`, userData,
+        const response = await axios.get(`${assignment_api_url}`,
             {
                 headers: {
                     Authorization: `Bearer ${idToken}`,
-                    'Content-Type': 'application/json',
+                },
+                withCredentials: true,    
+            }
+        );
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+
+const deleteAssignment = async (userId, assignmentId, idToken) => {
+    try {
+        await axios.delete(`${assignment_api_url}/${assignmentId}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${idToken}`,
                 },
                 withCredentials: true,
             }
         );
-        console.log(response.data);
-        return response.data;
-        
     } catch (error) {
         throw error;
     }
 }
 
-const deleteUser = async (id, idToken) => {
-    try {
-        const response = await axios.delete(`${user_api_url}/${id}`,
-            {
-                headers: {
-                    Authorization: `Bearer ${idToken}`,
-                    'Content-Type': 'application/json',
-                },
-                withCredentials: true,
-            }
-        );
-        console.log(response.data);
-        return response.data;
-        
-    } catch (error) {
-        throw error;
-    }
-}
 
-export {
-    registerUser,
-    getUserById,
-    updateUser,
-    deleteUser
-};
+export { createAssignment,
+    getAssignmentById,
+    getAssignments,
+    deleteAssignment
+ };

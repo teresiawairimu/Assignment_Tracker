@@ -23,7 +23,7 @@ const LogInPage = () => {
     const onSubmit = async (data) => {
         try {
             await signInWithEmailAndPassword(auth, data.email, data.password);
-            navigate('/');
+            navigate('/dashboard');
         } catch (error) {
             setLoginError(error.message);
             console.log("Error logging in:", error.message);

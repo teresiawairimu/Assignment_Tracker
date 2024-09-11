@@ -1,17 +1,16 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
-const PrivateRoute = ({ element, ...rest }) => {
-    const navigate = useNavigate();
+const PrivateRoute = ({ children }) => {
     const { currentUser } = useAuth();
+    const { location } = useLocation();
 
     if (!currentUser) {
-        navigate('/login');
-        return null;
+        return <Navigate to="/login" state={{ from: location }} replace />;
     }
 
-    return React.cloneElement(element, rest);
+    return children;
 }
 
 export default PrivateRoute;

@@ -1,12 +1,12 @@
 import axios from 'axios';
+
 import api_base_url from './apiConfig';
 
-const user_api_url = `${api_base_url}/api/users`;
+const category_api_url = `${api_base_url}/api/categories`;
 
-
-const registerUser = async (userData, idToken) => {
+const createCategory = async (categoryData, idToken) => {
     try {
-        const response = await axios.post(`${user_api_url}/register`, userData,
+        const response = await axios.post(`${category_api_url}/create`, categoryData,
             {
                 headers: {
                     Authorization: `Bearer ${idToken}`,
@@ -15,74 +15,63 @@ const registerUser = async (userData, idToken) => {
                 withCredentials: true,
             }
         );
-        console.log(response.data);
         return response.data;
-        
     } catch (error) {
         throw error;
     }
 }
 
-const getUserById = async (id, idToken) => {
+const getCategories = async (idToken) => {
     try {
-        const response = await axios.get(`${user_api_url}/${id}`,
+        const response = await axios.get(`${category_api_url}`,
             {
                 headers: {
                     Authorization: `Bearer ${idToken}`,
-                    'Content-Type': 'application/json',
                 },
                 withCredentials: true,
             }
         );
-        //console.log(response.data);
         return response.data;
-        
     } catch (error) {
         throw error;
     }
 }
 
-const updateUser = async (id, userData, idToken) => {
+const getCategoryById = async (categoryId, idToken) => {
     try {
-        const response = await axios.put(`${user_api_url}/${id}`, userData,
+        const response = await axios.get(`${category_api_url}/${categoryId}`,
             {
                 headers: {
                     Authorization: `Bearer ${idToken}`,
-                    'Content-Type': 'application/json',
                 },
                 withCredentials: true,
             }
         );
-        console.log(response.data);
         return response.data;
-        
     } catch (error) {
         throw error;
     }
 }
 
-const deleteUser = async (id, idToken) => {
+
+
+const deleteCategory = async (categoryId, idToken) => {
     try {
-        const response = await axios.delete(`${user_api_url}/${id}`,
+        await axios.delete(`${category_api_url}/${categoryId}`,
             {
                 headers: {
                     Authorization: `Bearer ${idToken}`,
-                    'Content-Type': 'application/json',
                 },
                 withCredentials: true,
             }
         );
-        console.log(response.data);
-        return response.data;
-        
     } catch (error) {
         throw error;
     }
 }
 
-export {
-    registerUser,
-    getUserById,
-    updateUser,
-    deleteUser
-};
+export { createCategory,
+    getCategories,
+    getCategoryById, 
+    deleteCategory
+ };
