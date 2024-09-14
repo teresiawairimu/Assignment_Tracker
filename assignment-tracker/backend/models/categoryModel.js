@@ -4,23 +4,24 @@ const { admin, db } = require('../firebaseAdmin');
 
 const createCategory = async (userId, categoryData) => {
     try {
-        const newCategoryRef = await db.collection('categories').doc();
-        const category = {
-            name: categoryData.name,
+        const newCategoryRef = db.collection('categories').doc();
+       
+        await newCategoryRef.set({
+             name: categoryData.name,
             userId: userId,
-            createdAt: admin.firestore.serverTimestamp(),
-        };
-
-        await newCategoryRef.set(category);
+            createdAt: admin.firestore.FieldValue.serverTimestamp()
+        });
 
         const userDoc = await db.collection('users').doc(userId).get();
         if (!userDoc.exists) {
             throw new Error('User not found!');
         }
         const userData = userDoc.data();
-        const { trelloBoardId } = userData;
+        const { boardId } = userData;
+        
 
-        const trelloLabelData = await createLabel(categoryData.name, trelloBoardId);
+        const trelloLabelData = await createLabel(categoryData.name, boardId);
+
 
         const labelData = {
             labelId: trelloLabelData.id,
@@ -46,7 +47,7 @@ const getCategories = async (userId) => {
         .get();
         const categories = [];
         categoriesSnapshot.forEach(doc => {
-            categories.push(doc.data());
+            categories.push({id: doc.id, ...doc.data() });
         });
         return categories;
 
@@ -58,7 +59,7 @@ const getCategories = async (userId) => {
 
 const getCategoryById = async (categoryId) => {
     try {
-        const categoryDoc = await db.collection('category').doc(categoryId).get();
+        const categoryDoc = await db.collection('categories').doc(categoryId).get();
         if (categoryDoc.exists) {
             return categoryDoc.data();
         } else {
@@ -70,22 +71,64 @@ const getCategoryById = async (categoryId) => {
     }
 }
 
+const updateCategory = async (categoryId, categoryData) => {
+    try {
+     
+        const categoryRef = db.collection('categories').doc(categoryId);
+        const categoryDoc = await categoryRef.get();
+    
+        if (!categoryDoc.exists) {
+            throw new Error('Category not found!');
+        }
+
+        const categoryDataInDb = categoryDoc.data();
+        const labelId = categoryDataInDb.trelloLabel.labelId;
+  
+
+        await categoryRef.update(categoryData);
+
+        const url = new URL(`https://api.trello.com/1/labels/${labelId}`);
+        url.searchParams.append('key', process.env.TRELLO_API_KEY);
+        url.searchParams.append('token', process.env.TRELLO_TOKEN);
+        url.searchParams.append('name', categoryData.name);
+
+        const response = await fetch(url,
+            {
+                method: 'PUT',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            },
+        );
+        if (!response.ok) {
+           const errorBody = await response.text();
+           console.error('Trello API Error:', response.status, errorBody);
+           console.error('Response headers:', response.headers);   
+           throw new Error(`Error updating category: ${response.status} ${errorBody}`);
+        }
+    } catch (error) {
+        console.error('Error updating category:', error);
+        throw error;
+    }
+}
 
 const deleteCategory = async (categoryId) => {
     try {
-        const categoryRef = db.collection('labels').doc(categoryId);
+        const categoryRef = db.collection('categories').doc(categoryId);
         const categoryDoc = await categoryRef.get();
         if (!categoryDoc.exists) {
             throw new Error('Category not found!');
         }
         const categoryData = categoryDoc.data();
-        const { trelloLabelId } = categoryData;
+        const labelId = categoryData.trelloLabel.labelId;
+ 
 
         await categoryRef.delete();
 
-        const url = new URL(`https://api.trello.com/1/labels/${trelloLabelId}`);
+        const url = new URL(`https://api.trello.com/1/labels/${labelId}`);
         url.searchParams.append('key', process.env.TRELLO_API_KEY);
-        url.searchParams.append('token', process.env.TRELLO_API_TOKEN);
+        url.searchParams.append('token', process.env.TRELLO_TOKEN);
 
         const response = await fetch(url, 
             { method: 'DELETE',
@@ -94,6 +137,9 @@ const deleteCategory = async (categoryId) => {
            );
 
         if (!response.ok) {
+            const errorBody = await response.text();
+            console.error('Trello API Error:', response.status, errorBody);
+            console.error('Response headers:', response.headers);
             throw new Error('Error deleting category');
         }
     } catch (error) {
@@ -105,5 +151,6 @@ const deleteCategory = async (categoryId) => {
 module.exports = { createCategory,
                 getCategories,
                 getCategoryById, 
+                updateCategory,
                 deleteCategory
  };

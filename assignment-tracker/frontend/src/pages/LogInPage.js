@@ -4,9 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { auth, signInWithEmailAndPassword } from '../firebaseConfig';
 import { useNavigate } from 'react-router-dom';
-import TextInput from '../components/form/inputs/TextInput';
-import FormLayout from '../components/form/layout/FormLayout';
-import SubmitButton from '../components/form/buttons/SubmitButton';
+import { Form, Button, Alert, Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 const schema = yup.object().shape({
@@ -25,35 +23,62 @@ const LogInPage = () => {
             await signInWithEmailAndPassword(auth, data.email, data.password);
             navigate('/dashboard');
         } catch (error) {
-            setLoginError(error.message);
-            console.log("Error logging in:", error.message);
+            console.error("Error ogging:", error);
+            if (error.code === 'auth/user-not-found') {
+                setLoginError('No account found with this email address');
+            } else if (error.code === 'auth/wrong-password') {
+                setLoginError('Password is incorrect');
+            } else {
+                setLoginError('An error occurred. Please try again later');
+            }
         }
     };
     return (
-        <FormLayout title="Login">
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <TextInput
-                    label="Email"
-                    name="email"
-                    register={register}
-                    placeholder="Enter your email"
-                    error={errors.email}
-                />
-                <TextInput
-                    label="Password"
-                    name="password"
-                    type="password"
-                    register={register}
-                    placeholder="Enter your password"
-                    error={errors.password}
-                />
-                <SubmitButton
-                label="Login"
-                 />
-                {loginError && <p className="text-red-500">{loginError}</p>}
-                <p>Don't have an account? <Link to="/register" className="text-blue-500">Register</Link></p>
-            </form>
-        </FormLayout>
+        <Container className="justify-content-center">
+            <Row className="justify-content-center">
+                <Col md={6}>
+                    <h2 className="text-center mb-4">Login</h2>
+                    <Form onSubmit={handleSubmit(onSubmit)}>
+                        <Form.Group controlId="formEmail">
+                            <Form.Label>Email</Form.Label>
+                            <Form.Control
+                             type="email"
+                             placeholder="Enter your email"
+                             {...register('email')}
+                            isInvalid={!!errors.email}
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                {errors.email?.message}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group controlId="formPassword">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control
+                             type="password"
+                             placeholder="Enter your password"
+                             {...register('password')}
+                            isInvalid={!!errors.password}
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                {errors.password?.message}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                        {loginError && (
+                            <Alert variant="danger" className="mt-3">
+                            {loginError}</Alert>
+                            )}
+
+                           
+                        <Button variant="primary" type="submit" className="mt-4 w-100">
+                            Login
+                        </Button>
+                        <p className="text-center mt-3">
+                        Don't have an account? <Link to="/register">Register</Link>
+                        </p>
+                    </Form>
+                </Col>
+            </Row>
+        </Container>
     );
 };
 

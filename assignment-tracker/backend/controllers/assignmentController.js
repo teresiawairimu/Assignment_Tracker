@@ -1,7 +1,9 @@
 const { createAssignment,
      getAssignmentById,
-    getAssignments, 
-    deleteAssignment
+    getAssignments,
+    updateAssignment,
+    deleteAssignment,
+    moveAssignmentToList
  } = require('../models/assignmentModel');
 
 const addAssignment = async (req, res) => {
@@ -9,8 +11,7 @@ const addAssignment = async (req, res) => {
     const assignmentData = req.body;
 
     try {
-        const assignment = await createAssignment(userId, assignmentData);
-        console.log("assignment is:", assignment);
+        const assignment = await createAssignment(userId, assignmentData);     
         res.status(201).json(assignment);
     } catch (error) {
         console.error("Error creating assignment:", error.message);
@@ -19,8 +20,9 @@ const addAssignment = async (req, res) => {
 }
 
 const retrieveAssignment = async (req, res) => {
-    const { userId } = req.user.uid;
+    const userId = req.user.uid;
     const { assignmentId } = req.params;
+    
 
     try {
         const assignment = await getAssignmentById(userId, assignmentId);
@@ -33,7 +35,7 @@ const retrieveAssignment = async (req, res) => {
 
 const retrieveAssignments = async (req, res) => {
     const userId  = req.user.uid;
-    console.log("userId is:", userId);
+    
 
     try {
         const assignments = await getAssignments(userId);
@@ -44,8 +46,22 @@ const retrieveAssignments = async (req, res) => {
     }
 }
 
+const modifyAssignment = async (req, res) => {
+    const userId  = req.user.uid;
+    const { assignmentId } = req.params;
+    const assignmentData = req.body;
+
+    try {
+        const assignment = await updateAssignment(userId, assignmentId, assignmentData);
+        res.status(200).json(assignment);
+    } catch (error) {
+        console.error("Error updating assignment:", error.message);
+        res.status(500).json({ error: "An error occurred while updating the assignment" });
+    }
+}
+
 const removeAssignment = async (req, res) => {
-    const { userId } = req.user.uid;
+    const userId  = req.user.uid;
     const { assignmentId } = req.params;
 
     try {
@@ -57,8 +73,24 @@ const removeAssignment = async (req, res) => {
     }
 }
 
+const moveAssignment = async (req, res) => {
+    const userId  = req.user.uid;
+    const { assignmentId } = req.params;
+    const { newListId } = req.body;
+
+    try {
+        await moveAssignmentToList(userId, assignmentId, newListId);
+        res.status(200).end();
+    } catch (error) {
+        console.error("Error moving assignment:", error.message);
+        res.status(500).json({ error: "An error occurred while moving the assignment" });
+    }
+}
+
 module.exports = { 
     addAssignment,
     retrieveAssignment,
     retrieveAssignments,
-    removeAssignment};
+    modifyAssignment,
+    removeAssignment,
+    moveAssignment};

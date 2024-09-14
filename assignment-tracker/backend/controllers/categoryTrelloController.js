@@ -17,7 +17,8 @@ const createLabel = async (name, boardId) => {
             throw new Error('Error creating label:', response.statusText);
         }
         const label = await response.json();
-        return label.id;
+        console.log('Label created:', label);
+        return label;
     } catch (error) {
         console.error('Error creating label:', error)
         throw error;

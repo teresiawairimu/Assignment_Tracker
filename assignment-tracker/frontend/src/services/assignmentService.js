@@ -55,6 +55,23 @@ const getAssignments = async (userId, idToken) => {
     }
 }
 
+const updateAssignment = async (assignmentId, assignmentData, idToken) => {
+    try {
+        const response = await axios.put(`${assignment_api_url}/${assignmentId}`, assignmentData,
+            {
+                headers: {
+                    Authorization: `Bearer ${idToken}`,
+                    'Content-Type': 'application/json',
+                },
+                withCredentials: true,
+            }
+        );
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
 
 const deleteAssignment = async (userId, assignmentId, idToken) => {
     try {
@@ -71,9 +88,28 @@ const deleteAssignment = async (userId, assignmentId, idToken) => {
     }
 }
 
+const moveAssignment = async (userId, assignmentId, newListId, idToken) => {
+    try {
+        const response = await axios.put(`${assignment_api_url}/${assignmentId}/move`, { newListId },
+            {
+                headers: {
+                    Authorization: `Bearer ${idToken}`,
+                    'Content-Type': 'application/json',
+                },
+                withCredentials: true,
+            }
+        );
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
 
 export { createAssignment,
     getAssignmentById,
     getAssignments,
-    deleteAssignment
+    updateAssignment,
+    deleteAssignment,
+    moveAssignment
  };

@@ -1,6 +1,7 @@
 const { createCategory, 
     getCategories,
-    getCategoryById, 
+    getCategoryById,
+    updateCategory, 
     deleteCategory } = require('../models/categoryModel');
 
 const addCategory = async (req, res) => {
@@ -30,6 +31,7 @@ const retrieveCategories = async (req, res) => {
 
 const retrieveCategory = async (req, res) => {
     const { categoryId } = req.params;
+    console.log('categoryId:', categoryId);
 
     try {
         const category = await getCategoryById(categoryId);
@@ -37,6 +39,21 @@ const retrieveCategory = async (req, res) => {
     } catch (error) {
         console.error("Error getting category:", error.message);
         res.status(500).json({ error: "An error occurred while getting the category" });
+    }
+}
+
+const modifyCategory = async (req, res) => {
+    const { categoryId } = req.params;
+    const categoryData = req.body;
+
+    console.log('categoryData:', categoryData);
+
+    try {
+        await updateCategory(categoryId, categoryData);
+        res.status(204).send();
+    } catch (error) {
+        console.error("Error updating category:", error.message);
+        res.status(500).json({ error: "An error occurred while updating the category" });
     }
 }
 
@@ -57,4 +74,5 @@ module.exports = {
     addCategory,
     retrieveCategories,
     retrieveCategory,
+    modifyCategory,
     removeCategory};

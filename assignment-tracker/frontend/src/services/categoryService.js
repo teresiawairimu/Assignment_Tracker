@@ -47,7 +47,24 @@ const getCategoryById = async (categoryId, idToken) => {
                 withCredentials: true,
             }
         );
+        console.log('response:', response);
         return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+const updateCategory = async (categoryId, categoryData, idToken) => {
+    try {
+        await axios.put(`${category_api_url}/${categoryId}`, categoryData,
+            {
+                headers: {
+                    Authorization: `Bearer ${idToken}`,
+                    'Content-Type': 'application/json',
+                },
+                withCredentials: true,
+            }
+        );
     } catch (error) {
         throw error;
     }
@@ -70,8 +87,9 @@ const deleteCategory = async (categoryId, idToken) => {
     }
 }
 
-export { createCategory,
-    getCategories,
+export { 
+    createCategory, 
+    getCategories, 
     getCategoryById, 
-    deleteCategory
- };
+    updateCategory, 
+    deleteCategory };
