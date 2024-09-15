@@ -1,9 +1,21 @@
-// LogInPage.test.js
+import React from 'react';
 import { render, screen } from '@testing-library/react';
 import LogInPage from './LogInPage';
-import { BrowserRouter as Router } from 'react-router-dom'; // Required for Link components
+import { BrowserRouter as Router } from 'react-router-dom'; 
 
-// Wrapper for rendering components with Router
+
+jest.mock('../firebaseConfig', () => ({
+  auth: jest.fn(),
+  signInWithEmailAndPassword: jest.fn(),
+}));
+
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => jest.fn(),
+}));
+
+
 const renderWithRouter = (component) => {
   return render(
     <Router>
