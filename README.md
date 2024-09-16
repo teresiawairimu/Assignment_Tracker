@@ -1,6 +1,8 @@
 # Assignment Tracker
 ![React](https://img.shields.io/badge/react-v18-blue)
 ![Node.js](https://img.shields.io/badge/node.js-v20-green)
+![Firebase](https://img.shields.io/badge/firebase-v9-orange)
+
 
 
 [![assignment-tracker](https://github.com/teresiawairimu/Assignment_Tracker/blob/main/assignment-tracker/frontend/src/assets/logo.png)](https://portfolio-project-7c952.web.app/)
