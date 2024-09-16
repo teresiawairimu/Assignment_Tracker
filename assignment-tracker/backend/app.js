@@ -28,7 +28,7 @@ app.use(
 
 
 const corsOptions = {
-    origin: ['http://localhost:3001', 'https://portfolio-project-7c952.web.app'],
+    origin: ['http://localhost:3001', 'https://portfolio-project-7c952.web.app', 'https://rocky-temple-55866-fb402add5e56.herokuapp.com'],
     methods: ['GET', 'POST', 'PUT' , 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials : true,
@@ -42,10 +42,24 @@ app.options('*', cors(corsOptions));
 
 app.use(express.json());
 
+app.get('/', (req, res) => {
+  res.send('Backend server is running');
+});
+
 
 app.use('/api/users', userRoute);
 app.use('/api/assignments', assignmentRoute);
 app.use('/api/categories', categoryRoute);
+
+app.use((req, res, next) => {
+  res.status(404).send('404 - Not Found');
+});
+
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('500 - Internal Server Error');
+});
 
 
 cron.schedule('* * * * *', async () => {
