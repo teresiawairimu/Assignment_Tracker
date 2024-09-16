@@ -45,7 +45,7 @@ Assignment-tracker helps students manage their assignments by providing a site w
 
   ---
   
-  ## Getting Started
+## Getting Started
   
 To clone and run this application, you'll need Node.js installed on your computer.
 
