@@ -8,7 +8,7 @@ const userRoute = require('./routes/userRoute');
 const assignmentRoute = require('./routes/assignmentRoute');
 const categoryRoute = require('./routes/categoryRoute');
 const { db } = require('./firebaseAdmin');
-const { helmet } = require('helmet');
+const helmet  = require('helmet');
 
 app.use(
   helmet({
