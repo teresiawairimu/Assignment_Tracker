@@ -14,7 +14,7 @@ const { db } = require('./firebaseAdmin');
 
 
 const corsOptions = {
-    origin: ['http://localhost:3001', 'https://localhost:3000'],
+    origin: ['http://localhost:3001', 'https://portfolio-project-7c952.web.app'],
     methods: ['GET', 'POST', 'PUT' , 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials : true,
