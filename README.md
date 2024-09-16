@@ -15,6 +15,15 @@ Assignment-tracker helps students manage their assignments by providing a site w
 ## ## [🚀 Live Demo](https://portfolio-project-7c952.web.app/)
 
 
+## Table of Contents
+- [Features](#features)
+- [Screenshots](#screenshots)
+- [Technologies Used](#technologies-used)
+- [Getting Started](#getting-started)
+- [About Me](#about-me)
+
+
+
 ### Features
 
 - 📝 Task Management 
