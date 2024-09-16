@@ -21,8 +21,6 @@ const CategoryPage = () => {
                 setError(null);
                 const idToken = await currentUser.getIdToken();
                 const categoriesData = await getCategories(idToken);
-                console.log('categoriesData:', categoriesData);
-                console.log("category id", categoriesData.id);
                 setCategories(categoriesData);
             } catch (error) {
                 console.error('Failed to fetch categories:', error);
@@ -41,7 +39,6 @@ const CategoryPage = () => {
         try {
             const idToken = await currentUser.getIdToken();
             await deleteCategory(id, idToken);
-            console.log('Deleted category:', id);
             setCategories((prevCategories) => prevCategories.filter((category) => category.id !== id));
         } catch (error) {
             console.error('Failed to delete category:', error);
