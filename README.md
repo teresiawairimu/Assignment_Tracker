@@ -123,7 +123,7 @@ I’m eager to contribute to new challenges and grow as a developer while delive
 
 ---
 ## 🔗 Links
-- [Live Demo](https://portfolio-project-7c952.web.app/dashboard)
+- [Live Demo](https://portfolio-project-7c952.web.app/)
 - [GitHub Repository](https://github.com/teresiawairimu/Assignment_Tracker/tree/main)
 
 
