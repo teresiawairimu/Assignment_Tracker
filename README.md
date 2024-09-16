@@ -4,35 +4,30 @@
 ![Firebase](https://img.shields.io/badge/firebase-v9-orange)
 
 
-
 [![assignment-tracker](https://github.com/teresiawairimu/Assignment_Tracker/blob/main/assignment-tracker/frontend/src/assets/logo.png)](https://portfolio-project-7c952.web.app/)
 
----
 
 ## Overview
 
 Assignment-tracker helps students manage their assignments by providing a site where they can upload their assignment titles and get notified about upcoming deadlines.
 
----
+
 ## ## [🚀 Live Demo](https://portfolio-project-7c952.web.app/)
 
----
 
 ### Features
 
--![Check List](https://img.shields.io/badge/Check_List-fa--light-lightgrey?logo=font-awesome) Task management
--![Calendar](https://img.shields.io/badge/Calendar-fa--regular-lightgrey?logo=font-awesome) Due date reminders
--![Progress Bars](https://img.shields.io/badge/Progress_Bars-fa--solid-lightgrey?logo=font-awesome) Progress tracking
--![label](https://img.shields.io/badge/Tag-fa--regular-lightgrey?logo=font-awesome) Organization
+- 📝 Task Management 
+- 📅 Due date reminders
+- 📊 Progress Tracking
+- 🏷️ Category Labeling
 
----
+
 
 ## Screenshots
 ![Homepage](https://github.com/teresiawairimu/Assignment_Tracker/blob/main/assignment-tracker/frontend/src/assets/images/homepage.png)
 ![Dashboard](https://github.com/teresiawairimu/Assignment_Tracker/blob/main/assignment-tracker/frontend/src/assets/images/dashboard_assignment.png)
 
-
----
 
 ## Technologies Used
 
@@ -45,7 +40,6 @@ Assignment-tracker helps students manage their assignments by providing a site w
 - Heroku: For backend hosting (if applicable)
 - Firebase Web Hosting: For frontend hosting
 
----
   
 ## Getting Started
   
