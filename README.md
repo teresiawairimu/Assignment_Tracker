@@ -26,16 +26,26 @@ Assignment-tracker helps students manage their assignments by providing a site w
 
 ### Features
 
-- 📝 Task Management 
+- 📝 Task Management
+
+  ![Dashboard](https://github.com/teresiawairimu/Assignment_Tracker/blob/main/assignment-tracker/frontend/src/assets/images/dashboard_assignment.png)
+
+  The web app allows users to create, view, update, and delete assignments. 
 - 📅 Due date reminders
+  The deadline notification feature sends alerts to users when assignment deadlines are approaching.
+  Users receive notifications via email reminding them of upcoming due dates, helping them stay on track and meet deadlines. 
 - 📊 Progress Tracking
+  The progress tracking feature allows users to monitor the status of their assignments and tasks.
+  It provides a visual indicator (e.g., completed list) showing how much work is done.
+  Users can update list as they progress, helping them stay organized and on top of their workload.
 - 🏷️ Category Labeling
+  The category labeling feature allows users to assign labels or categories to their assignments and tasks, making it easier to organize and filter them. 
 
 
 
 ## Screenshots
 ![Homepage](https://github.com/teresiawairimu/Assignment_Tracker/blob/main/assignment-tracker/frontend/src/assets/images/homepage.png)
-![Dashboard](https://github.com/teresiawairimu/Assignment_Tracker/blob/main/assignment-tracker/frontend/src/assets/images/dashboard_assignment.png)
+
 
 
 ## Technologies Used
