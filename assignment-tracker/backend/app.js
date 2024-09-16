@@ -60,13 +60,12 @@ cron.schedule('* * * * *', async () => {
       .where('notification', '==', false)
       .get();
 
-      console.log('Assignments due tomorrow:', assignmentsSnapshot.size);
 
       for (const assignmentDoc of assignmentsSnapshot.docs) {
         const assignment = assignmentDoc.data();
-        console.log('Sending email notification to:', assignment.email);
+    
         const dueDate = assignment.dueDate.toDate();
-        console.log('Due date:', dueDate);
+ 
 
         await sendEmailNotification(user.email, assignment.name, dueDate);
         await assignmentDoc.ref.update({ notification: true });
