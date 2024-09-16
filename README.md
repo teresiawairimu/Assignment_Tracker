@@ -20,10 +20,10 @@ Assignment-tracker helps students manage their assignments by providing a site w
 
 ### Features
 
-![Check List](https://img.shields.io/badge/Check_List-fa--light-lightgrey?logo=font-awesome) Task management
-![Calendar](https://img.shields.io/badge/Calendar-fa--regular-lightgrey?logo=font-awesome) Due date reminders
-![Progress Bars](https://img.shields.io/badge/Progress_Bars-fa--solid-lightgrey?logo=font-awesome) Progress tracking
-![label](https://img.shields.io/badge/Tag-fa--regular-lightgrey?logo=font-awesome) Organization
+-![Check List](https://img.shields.io/badge/Check_List-fa--light-lightgrey?logo=font-awesome) Task management
+-![Calendar](https://img.shields.io/badge/Calendar-fa--regular-lightgrey?logo=font-awesome) Due date reminders
+-![Progress Bars](https://img.shields.io/badge/Progress_Bars-fa--solid-lightgrey?logo=font-awesome) Progress tracking
+-![label](https://img.shields.io/badge/Tag-fa--regular-lightgrey?logo=font-awesome) Organization
 
 ---
 
