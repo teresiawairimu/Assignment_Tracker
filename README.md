@@ -72,7 +72,7 @@ I fell ill while in graduate school and was hospitalized for a few days. The rec
 - Node.js: Backend runtime
 - Express: Backend framework
 - React Bootstrap: UI components
-- Heroku: For backend hosting (if applicable)
+- Heroku: For backend hosting
 - Firebase Web Hosting: For frontend hosting
 
   
