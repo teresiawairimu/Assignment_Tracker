@@ -43,7 +43,7 @@ Assignment-tracker helps students manage their assignments by providing a site w
 - Heroku: For backend hosting (if applicable)
 - Firebase Web Hosting: For frontend hosting
 
-  ---
+---
   
 ## Getting Started
   
