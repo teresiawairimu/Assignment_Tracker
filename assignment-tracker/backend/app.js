@@ -10,14 +10,15 @@ const categoryRoute = require('./routes/categoryRoute');
 const { db } = require('./firebaseAdmin');
 const { helmet } = require('helmet');
 
-
 app.use(
-  helmet.contentSecurityPolicy({
-    directives: {
-      defaultSrc: ["'none'"],
-      imgSrc: ["'self'", "https://rocky-temple-55866-fb402add5e56.herokuapp.com"],
-      scriptSrc: ["'self'"],
-      styleSrc: ["'self'"],
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'none'"],
+        imgSrc: ["'self'", "https://rocky-temple-55866-fb402add5e56.herokuapp.com"],
+        scriptSrc: ["'self'"],
+        styleSrc: ["'self'"],
+      },
     },
   })
 );
