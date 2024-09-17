@@ -3,7 +3,8 @@ const { addAssignment,
         retrieveAssignments,
         modifyAssignment,
         removeAssignment,
-        moveAssignment
+        moveAssignment,
+        retrieveAssignmentsByCategory
  } = require('../controllers/assignmentController');
  const { verifyToken } = require('../middleware/authMiddleware');
 const express = require('express');
@@ -15,6 +16,7 @@ router.get('/', verifyToken, retrieveAssignments);
 router.put('/:assignmentId', verifyToken, modifyAssignment);
 router.delete('/:assignmentId', verifyToken, removeAssignment);
 router.put('/:assignmentId/move', verifyToken, moveAssignment);
+router.get('/category/:categoryId', verifyToken, retrieveAssignmentsByCategory);
 
 module.exports = router;
 

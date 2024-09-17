@@ -17,7 +17,7 @@ const saveAssignmentData = async (userId, assignmentData, cardId, listId) => {
         name: assignmentData.name,
         description: assignmentData.description,
         dueDate: assignmentData.dueDate ? admin.firestore.Timestamp.fromDate(new Date(assignmentData.dueDate)) : null,
-        category: assignmentData.category ? assignmentData.category.labelId : null,
+        category: assignmentData.category,
         trelloCardId: cardId,
         toDoListId: listId,
         notification: false,
@@ -27,9 +27,7 @@ const saveAssignmentData = async (userId, assignmentData, cardId, listId) => {
 }
 const createAssignment = async (userId, assignmentData) => {
     const userDoc = await db.collection('users').doc(userId).get();
-   
-    
-
+ 
 
     let boardData;
     if (userDoc.exists && userDoc.data().boardId) {
@@ -42,10 +40,22 @@ const createAssignment = async (userId, assignmentData) => {
 
     const { toDoListId } = boardData;
     const { name, description, dueDate, category } = assignmentData;
-    
+   
 
-    const labelDoc = await db.collection('categories').where('name', '==', category).get();
-    const labelId = labelDoc.empty ? null : labelDoc.docs[0].data().trelloLabel.labelId;
+    let labelId;
+    try {
+        const categoryDoc = await db.collection('categories').doc(category).get();
+
+        if (categoryDoc.exists) {
+            const categoryData = categoryDoc.data(); 
+            const labelId = categoryData.trelloLabel.labelId;
+            console.log('labelId:', labelId);
+        } else {
+            console.log('No matching category found');
+        }
+    } catch (error) {
+        console.error('Error getting category:', error);
+    }
    
 
     const url = new URL('https://api.trello.com/1/cards');
@@ -53,7 +63,7 @@ const createAssignment = async (userId, assignmentData) => {
     url.searchParams.append('desc', description);
     url.searchParams.append('idList', toDoListId);
     if (dueDate) url.searchParams.append('due', new Date(dueDate).toISOString());
-    if (category && category.labelId) url.searchParams.append('idLabels', category.labelId);
+    if (labelId) url.searchParams.append('idLabels', labelId);
     url.searchParams.append('key', process.env.TRELLO_API_KEY);
     url.searchParams.append('token', process.env.TRELLO_TOKEN);
 
@@ -68,12 +78,9 @@ const createAssignment = async (userId, assignmentData) => {
             throw new Error('Error creating card:', response.statusText);
         }
         const cardData = await response.json();
-        console.log('Card created:', cardData);
         
-        await saveAssignmentData(userId, {
-            ...assignmentData, 
-            category: {labelId}
-        }, cardData.id, toDoListId);
+        
+        await saveAssignmentData(userId, assignmentData, cardData.id, toDoListId);
         return cardData.id;
     } catch (error) {
         console.error('Error creating card', error);
@@ -137,14 +144,38 @@ const updateAssignment = async (userId, assignmentId, assignmentData) => {
         return;
     }
 
+    const assignmentDetails = assignmentDoc.data();
+    const trelloCardId = assignmentDetails.trelloCardId;
+
     const { name, description, dueDate, category } = assignmentData;
-    const url = new URL(`https://api.trello.com/1/cards/${assignmentDoc.data().trelloCardId}`);
+
+
+    let labelId;
+    try {
+        const categoryDoc = await db.collection('categories').doc(category).get();
+         
+
+
+        if (categoryDoc.exists) {
+            const categoryData = categoryDoc.data(); 
+            
+            const labelId = categoryData.trelloLabel.labelId;
+            console.log('labelId:', labelId);
+        } else {
+            console.log('No matching category found');
+        }
+    } catch (error) {
+        console.error('Error getting category:', error);
+    }
+   
+    const url = new URL(`https://api.trello.com/1/cards/${trelloCardId}`);
+    url.searchParams.append('name', name);
+    url.searchParams.append('desc', description);
+    url.searchParams.append('due', new Date(dueDate).toISOString());
+    if (labelId) url.searchParams.append('idLabels', labelId);
     url.searchParams.append('key', process.env.TRELLO_API_KEY);
     url.searchParams.append('token', process.env.TRELLO_TOKEN);
-    if (name) url.searchParams.append('name', name);
-    if (description) url.searchParams.append('desc', description);
-    if (dueDate) url.searchParams.append('due', new Date(dueDate).toISOString());
-    if (category && category.labelId) url.searchParams.append('idLabels', category.labelId);
+    
 
     try {
         const response = await fetch(url, { 
@@ -161,12 +192,19 @@ const updateAssignment = async (userId, assignmentId, assignmentData) => {
         throw error;
     }
 
-    await assignmentRef.update({
+    const updateData = {
         name: name,
         description: description,
         dueDate: dueDate ? admin.firestore.Timestamp.fromDate(new Date(dueDate)) : null,
-        category: category ? category.labelId : null,
-    });
+    };
+
+ ed
+    if (category) {
+        updateData.category = category;
+    }
+
+    await assignmentRef.update(updateData);
+   
 }
 
 
@@ -205,9 +243,18 @@ const deleteAssignment = async (userId, assignmentId) => {
     }
 }
 
-const moveAssignmentToList = async (userId, assignmentId, newListId) => {
-  
-    
+const moveAssignmentToList = async (userId, assignmentId, newListStatus) => {
+    userDoc = await db.collection('users').doc(userId).get();
+    if (!userDoc.exists) {
+        console.error('User not found');
+        return;
+    }
+
+    const { completedListId } = userDoc.data();
+    const newListId = {
+        completedListId: completedListId
+    };
+
     const assignmentRef = db.collection('users').doc(userId).collection('assignments').doc(assignmentId);
     const assignmentDoc = await assignmentRef.get();
 
@@ -243,9 +290,26 @@ const moveAssignmentToList = async (userId, assignmentId, newListId) => {
 
     await assignmentRef.update({
         currentListId: newListId, 
+        status: newListStatus,
         updatedAt: admin.firestore.FieldValue.serverTimestamp()
     });
 };
+
+const getAssignmentsByCategory = async (userId, category) => {
+    const assignmentsRef = db.collection('users').doc(userId).collection('assignments').where('category', '==', category);
+
+    try {
+        const assignmentsSnapshot = await assignmentsRef.get();
+        const assignments = [];
+        assignmentsSnapshot.forEach((doc) => {
+            assignments.push({ id: doc.id, ...doc.data() });
+        });
+        return assignments;
+    } catch (error) {
+        console.error('Error getting assignments:', error);
+    }
+}
+
 
 
 module.exports = { 
@@ -254,5 +318,6 @@ module.exports = {
     getAssignments,
     updateAssignment,
     deleteAssignment,
-    moveAssignmentToList
+    moveAssignmentToList,
+    getAssignmentsByCategory
 };

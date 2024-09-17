@@ -3,7 +3,8 @@ const { createAssignment,
     getAssignments,
     updateAssignment,
     deleteAssignment,
-    moveAssignmentToList
+    moveAssignmentToList,
+    getAssignmentsByCategory
  } = require('../models/assignmentModel');
 
 const addAssignment = async (req, res) => {
@@ -76,14 +77,27 @@ const removeAssignment = async (req, res) => {
 const moveAssignment = async (req, res) => {
     const userId  = req.user.uid;
     const { assignmentId } = req.params;
-    const { newListId } = req.body;
+    const { newListStatus } = req.body;
 
     try {
-        await moveAssignmentToList(userId, assignmentId, newListId);
+        await moveAssignmentToList(userId, assignmentId, newListStatus);
         res.status(200).end();
     } catch (error) {
         console.error("Error moving assignment:", error.message);
         res.status(500).json({ error: "An error occurred while moving the assignment" });
+    }
+}
+
+const retrieveAssignmentsByCategory = async (req, res) => {
+    const userId  = req.user.uid;
+    const { categoryId } = req.params;
+
+    try {
+        const assignments = await getAssignmentsByCategory(userId, categoryId);
+        res.status(200).json(assignments);
+    } catch (error) {
+        console.error("Error getting assignments by category:", error.message);
+        res.status(500).json({ error: "An error occurred while getting the assignments by category" });
     }
 }
 
@@ -93,4 +107,5 @@ module.exports = {
     retrieveAssignments,
     modifyAssignment,
     removeAssignment,
-    moveAssignment};
+    moveAssignment,
+    retrieveAssignmentsByCategory};
