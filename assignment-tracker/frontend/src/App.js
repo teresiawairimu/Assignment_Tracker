@@ -41,7 +41,7 @@ const App = () => {
 
             <Route path="/register" element={<RegistrationPage />} />
 
-            {/*<Route path="/api" element={<ApiDocs />} /> */}
+       
             
           </Routes>
       </AuthProvider>

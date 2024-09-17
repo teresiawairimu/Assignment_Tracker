@@ -10,7 +10,7 @@ import { getCategories } from '../../services/categoryService';
 
 const schema = yup.object().shape({
     name: yup.string().required('The assignment name is required'),
-    description: yup.string(),
+    description: yup.string().required('The description is required'),
     dueDate: yup.date()
         .required('The due date is required')
         .min(new Date(), 'The due date must be in the future'),
@@ -47,8 +47,7 @@ const AssignmentPage = () => {
             const fetchAssignment = async () => {
                 try {
                     const idToken = await currentUser.getIdToken();
-                    const assignmentData = await getAssignmentById(currentUser.uid, id, idToken);
-                    console.log('assignmentData:', assignmentData);
+                    const assignmentData = await getAssignmentById(currentUser.uid, id, idToken); 
                     reset({
                         name: assignmentData.name,
                         description: assignmentData.description,
@@ -71,7 +70,6 @@ const AssignmentPage = () => {
     const onSubmit = async (data) => {
         if (!currentUser) return;
         setIsLoading(true);
-        console.log('form data:', data);
         try {
             const idToken = await currentUser.getIdToken();
             if (isEditing) {

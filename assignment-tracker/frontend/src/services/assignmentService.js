@@ -88,13 +88,29 @@ const deleteAssignment = async (userId, assignmentId, idToken) => {
     }
 }
 
-const moveAssignment = async (userId, assignmentId, newListId, idToken) => {
+const moveAssignment = async (userId, assignmentId, newListStatus, idToken) => {
     try {
-        const response = await axios.put(`${assignment_api_url}/${assignmentId}/move`, { newListId },
+        const response = await axios.put(`${assignment_api_url}/${assignmentId}/move`, { newListStatus },
             {
                 headers: {
                     Authorization: `Bearer ${idToken}`,
                     'Content-Type': 'application/json',
+                },
+                withCredentials: true,
+            }
+        );
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+const getAssignmentsByCategory = async (userId, categoryId, idToken) => {
+    try {
+        const response = await axios.get(`${assignment_api_url}/category/${categoryId}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${idToken}`,
                 },
                 withCredentials: true,
             }
@@ -111,5 +127,6 @@ export { createAssignment,
     getAssignments,
     updateAssignment,
     deleteAssignment,
-    moveAssignment
+    moveAssignment,
+    getAssignmentsByCategory
  };

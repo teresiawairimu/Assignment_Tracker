@@ -2,12 +2,14 @@ import React, {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { getCategories, deleteCategory } from '../services/categoryService';
-import { Container, ListGroup, ListGroupItem, Button, Col} from 'react-bootstrap';
-import { Row } from 'react-bootstrap';
+import { getAssignmentsByCategory } from '../services/assignmentService';
+import { Button, Container, ListGroup, ListGroupItem, Row, Col} from 'react-bootstrap';
+
 
 
 const CategoryPage = () => {
     const [categories, setCategories] = useState([]);
+    const [filteredAssignments, setFilteredAssignments] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const { currentUser } = useAuth();
@@ -32,6 +34,16 @@ const CategoryPage = () => {
         fetchCategories();
     }
     , [currentUser]);
+
+    const handleViewAssignments = async (categoryId) => {
+        try {
+            const idToken = await currentUser.getIdToken();
+            const assignments = await getAssignmentsByCategory(currentUser.uid, categoryId, idToken); 
+            setFilteredAssignments(assignments); 
+        } catch (error) {
+            console.error('Failed to fetch assignments for this category:', error);
+        }
+    };
 
     const handleDelete = async (id) => {
         const confirmDelete = window.confirm('Are you sure you want to delete this assignment?');
@@ -81,8 +93,6 @@ const CategoryPage = () => {
                     >
                     
                         <h2>{category.name}</h2>
-                     
-
                         <Row>
                         <Col xs="auto">
                         <Button 
@@ -92,6 +102,16 @@ const CategoryPage = () => {
                         size="sm"
                         >
                         Edit
+                        </Button>
+                        </Col>
+                        <Col xs="auto">
+                        <Button 
+                        className="mb-5"
+                        variant="primary" 
+                        onClick={() => handleViewAssignments(category.id)}
+                        size="sm"
+                        >
+                        View
                         </Button>
                         </Col>
                         <Col xs="auto">
@@ -108,6 +128,21 @@ const CategoryPage = () => {
                     </ListGroupItem>
                 ))}
             </ListGroup>
+        )}
+        {filteredAssignments.length > 0 && (
+            <div className="mt-5">
+                <h2>Assignments in selected category</h2>
+                <ListGroup>
+                    {filteredAssignments.map((assignment) =>(
+                        <ListGroupItem
+                        key={assignment.id}
+                        className="d-flex justify-content-between align-items-center"
+                        >
+                            <span>{assignment.name}</span>
+                        </ListGroupItem>
+                    ))}
+                </ListGroup>
+            </div>
         )}
         </Container>
     );

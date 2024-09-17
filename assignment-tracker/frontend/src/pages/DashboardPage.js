@@ -32,6 +32,8 @@ const DashboardPage = () => {
                 const idToken = await currentUser.getIdToken();
                 const data = await getAssignments(currentUser.uid, idToken);
                 console.log('assignment data:', data);
+                const completedAssignments = data.filter((assignment) => assignment.status === 'completed');
+                setCompletedAssignments(completedAssignments);
                 setAssignments(data);
             } catch (error) {
                 console.error(error);
@@ -62,10 +64,10 @@ const DashboardPage = () => {
         }
     }
 
-    const handleComplete = async (assignmentId, newListId) => {
+    const handleComplete = async (assignmentId, newListStatus) => {
         try {
             const idToken = await currentUser.getIdToken();
-            await moveAssignment(currentUser.uid, assignmentId, newListId, idToken);
+            await moveAssignment(currentUser.uid, assignmentId, newListStatus, idToken);
             const completedAssignment = assignments.find((assignment) => assignment.id === assignmentId);
             setAssignments(assignments.filter((assignment) => assignment.id !== assignmentId));
             setCompletedAssignments([...completedAssignments, completedAssignment]);
