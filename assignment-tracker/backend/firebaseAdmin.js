@@ -2,7 +2,12 @@ const admin = require('firebase-admin');
 require('dotenv').config();
 
 
-
+/**
+ * Firebase Admin SDK initialization
+ * @module firebaseAdmin
+ * @type {Object}
+ * @see {@link https://firebase.google.com/docs/admin/setup}
+ */
 admin.initializeApp({
   credential: admin.credential.cert({
     type: process.env.FIREBASE_TYPE,
@@ -19,6 +24,11 @@ admin.initializeApp({
   })
 });
 
+/**
+ * Firestore database instance for interacting with Firestore Collections
+ * @module firebaseAdmin
+ * @type {Object}
+ */
 const db = admin.firestore();
 
 

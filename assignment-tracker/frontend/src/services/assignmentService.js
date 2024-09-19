@@ -5,128 +5,138 @@ import api_base_url from './apiConfig';
 
 const assignment_api_url = `${api_base_url}/api/assignments`;
 
-const createAssignment = async (assignmentData, idToken) => {
-    try {
-        const response = await axios.post(`${assignment_api_url}/create`, assignmentData,
-            {
-                headers: {
-                    Authorization: `Bearer ${idToken}`,
-                    'Content-Type': 'application/json',
-                },
-                withCredentials: true,
-            }
-        );
-        console.log("create asignment response is:", response.data);
-        return response.data;
-    } catch (error) {
-        throw error;
+
+/**
+ * Creates a new assignment
+ * @param {Object} assignmentData - The assignment data to be created
+ * @param {string} idToken - The authentication token
+ * @returns {Promise<Object>} The created assignment
+ */
+export const createAssignment = async (assignmentData, idToken) => { 
+  const response = await axios.post(`${assignment_api_url}/create`, assignmentData,
+    {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true,
     }
+    );
+    return response.data;
 }
 
-const getAssignmentById = async (userId, assignmentId, idToken) => {
-    try {
-        const response = await axios.get(`${assignment_api_url}/${assignmentId}`,
-            {
-                headers: {
-                    Authorization: `Bearer ${idToken}`,
-                },
-                withCredentials: true,
-            }
-        );
-        return response.data;
-    } catch (error) {
-        throw error;
+/**
+ * Retreives an assignment by its ID
+ * @param {string} userId - The user's ID 
+ * @param {string} assignmentId - The assignment's ID to get the requested data
+ * @param {string} idToken - The authentication token
+ * @returns {Promise<Object>} The data of requested assignment
+ */
+export const getAssignmentById = async (userId, assignmentId, idToken) => {
+  const response = await axios.get(`${assignment_api_url}/${assignmentId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+      withCredentials: true,
     }
+  );
+  return response.data;
 }
 
-const getAssignments = async (userId, idToken) => {
-    try {
-        const response = await axios.get(`${assignment_api_url}`,
-            {
-                headers: {
-                    Authorization: `Bearer ${idToken}`,
-                },
-                withCredentials: true,    
-            }
-        );
-        return response.data;
-    } catch (error) {
-        throw error;
+/**
+ * Retrieves all assignments
+ * @param {string} userId - The user's ID
+ * @param {string} idToken - The authentication token   
+ * @returns {Promise<Array>} A list of assignments
+ */
+export const getAssignments = async (userId, idToken) => {
+  const response = await axios.get(`${assignment_api_url}`,
+   {
+     headers: {
+      Authorization: `Bearer ${idToken}`,
+     },
+     withCredentials: true,    
     }
+  );
+  return response.data;
 }
 
-const updateAssignment = async (assignmentId, assignmentData, idToken) => {
-    try {
-        const response = await axios.put(`${assignment_api_url}/${assignmentId}`, assignmentData,
-            {
-                headers: {
-                    Authorization: `Bearer ${idToken}`,
-                    'Content-Type': 'application/json',
-                },
-                withCredentials: true,
-            }
-        );
-        return response.data;
-    } catch (error) {
-        throw error;
+/**
+ * Updates an assignment
+ * @param {string} assignmentId - The assignment's ID to update
+ * @param {object} assignmentData - The assignment data to be updated
+ * @param {string} idToken - The authentication token 
+ * @returns 
+ */
+export const updateAssignment = async (assignmentId, assignmentData, idToken) => {
+  const response = await axios.put(`${assignment_api_url}/${assignmentId}`, assignmentData,
+    {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true,
     }
-}
-
-
-const deleteAssignment = async (userId, assignmentId, idToken) => {
-    try {
-        await axios.delete(`${assignment_api_url}/${assignmentId}`,
-            {
-                headers: {
-                    Authorization: `Bearer ${idToken}`,
-                },
-                withCredentials: true,
-            }
-        );
-    } catch (error) {
-        throw error;
-    }
-}
-
-const moveAssignment = async (userId, assignmentId, newListStatus, idToken) => {
-    try {
-        const response = await axios.put(`${assignment_api_url}/${assignmentId}/move`, { newListStatus },
-            {
-                headers: {
-                    Authorization: `Bearer ${idToken}`,
-                    'Content-Type': 'application/json',
-                },
-                withCredentials: true,
-            }
-        );
-        return response.data;
-    } catch (error) {
-        throw error;
-    }
-}
-
-const getAssignmentsByCategory = async (userId, categoryId, idToken) => {
-    try {
-        const response = await axios.get(`${assignment_api_url}/category/${categoryId}`,
-            {
-                headers: {
-                    Authorization: `Bearer ${idToken}`,
-                },
-                withCredentials: true,
-            }
-        );
-        return response.data;
-    } catch (error) {
-        throw error;
-    }
+  );
+  return response.data;
 }
 
 
-export { createAssignment,
-    getAssignmentById,
-    getAssignments,
-    updateAssignment,
-    deleteAssignment,
-    moveAssignment,
-    getAssignmentsByCategory
- };
+/** 
+ * Deletes an assignment
+ * @param {string} userId - The user's ID
+ * @param {string} assignmentId - The assignment's ID to delete
+ * @param {string} idToken - The authentication token
+ * returns {Promise<void>} - No return data on success
+ */
+ export const deleteAssignment = async (userId, assignmentId, idToken) => {
+  await axios.delete(`${assignment_api_url}/${assignmentId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+      withCredentials: true,
+    }
+  );
+}
+
+/**
+ * Moves an assignment to a different status
+ * @param {string} userId - The user's ID 
+ * @param {string} assignmentId - The ID of the assignment to move
+ * @param {string} newListStatus - The new status of the assignment 
+ * @param {string} idToken - The authentication token
+ * @returns {Promise<Object>} The updated assignment
+ */
+export const moveAssignment = async (userId, assignmentId, newListStatus, idToken) => {
+  const response = await axios.put(`${assignment_api_url}/${assignmentId}/move`, { newListStatus },
+    {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true,
+    }
+  );
+  return response.data;
+}
+
+/**
+ * Retrieves assignments by a specified category
+ * @param {string} userId - The user's ID
+ * @param {string} categoryId - The category's ID to get the requested data 
+ * @param {string} idToken - The authentication token
+ * @returns {Promise<Array>} A list of assignments
+ */
+export const getAssignmentsByCategory = async (userId, categoryId, idToken) => {
+  const response = await axios.get(`${assignment_api_url}/category/${categoryId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+      withCredentials: true,
+    }
+  );
+  return response.data;
+}

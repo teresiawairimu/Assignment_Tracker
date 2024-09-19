@@ -7,11 +7,26 @@ import { useNavigate } from 'react-router-dom';
 import { Form, Button, Alert, Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
+
+/**
+ * Validation schema for the login form
+ * It validates the email and password fields
+ * - `email` must be a valid email address
+ * - `password` must be at least 6 characters long
+ * 
+ * @type {Yup.ObjectSchema} Validation schema for email and password
+ */
 const schema = yup.object().shape({
     email: yup.string().email('Invalid email').required('Email is required'),
     password: yup.string().min(6, 'Password must be at least 6 characters').required('Password is required')
   });
 
+
+/**
+ * The login component that allows users to log in to the application
+ * @component
+ * @returns {JSX.Element} The rendered LogInPage component
+ */
 const LogInPage = () => {
     const [loginError, setLoginError] = useState(null);
     const { register, handleSubmit, formState: { errors }} = useForm({

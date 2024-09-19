@@ -2,9 +2,18 @@ const sgMail = require('@sendgrid/mail');
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
- 
+/**
+ * sends email notification
+ * @async
+ * @param {string} toEmail - The email address to send the notification to
+ * @param {string} assignmentTitle - The title of the assignment
+ * @param {string} deadline - The deadline of the assignment
+ * @returns {Promise<void>} - Resolves when the email is sent
+ * @throws {Error} - Logs an error message if sending the email fails
+ */
+
 const sendEmailNotification = async (toEmail, assignmentTitle, deadline) => {
-  console.log('Sending email to', toEmail);
+
   const msg = {
     to: toEmail,
     from: 'teresia@techieblitz.com',
@@ -18,6 +27,7 @@ const sendEmailNotification = async (toEmail, assignmentTitle, deadline) => {
     console.log('Email sent successfully to', toEmail);
   } catch (error) {
     console.error('Error sending email:', error.message);
+    throw new Error('Error sending email');
   }
 };
 

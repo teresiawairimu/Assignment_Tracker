@@ -7,11 +7,26 @@ import { Form, Button, Container, Alert } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
 import { getUserById, updateUser, deleteUser } from '../services/userService';
 
+/**
+ * Validate the form fields of a user profile
+ * username be a string and required
+ * email be a string, a valid email address and required
+ * 
+ * @type {Yup.ObjectSchema} Validation schema for username and email
+ */
+
 const schema = yup.object().shape({
   username: yup.string().required('Username is required'),
   email: yup.string().email('Invalid email').required('Email is required')
 });
 
+
+/**
+ * The profile page component that allows users to view and update their profile
+ * @component
+ * @returns {JSX.Element} The rendered ProfilePage component
+ * 
+*/
 const ProfilePage = () => {
   const [profileErrors, setProfileErrors] = useState([]);
   const { currentUser } = useAuth();
@@ -19,10 +34,28 @@ const ProfilePage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
+  /**
+   * Initializes form control and validation with Yup resolver
+   * 
+   * @typedef {Object} useFormReturn
+   * @property {function} register - Register input elements with the form
+   * @property {function} handleSubmit - Handle form submission
+   * @property {Object} formState - State of the form
+   * @property {Object} formState.errors - Errors in the form fields
+   * @property {function} setValue - Set the value of a form field
+   * @param {Object} resolver - Yup resolver for the form
+   * @returns {useFormReturn} Form control and validation functions 
+   */
   const { register, handleSubmit, formState: { errors }, setValue } = useForm({
     resolver: yupResolver(schema),
   });
 
+  /**
+   * Fetches user data from the database and sets the form values
+   * @async
+   * function fetchUserData
+   * @returns {Promise<void>} Sets the user data and form values
+   */
   useEffect(() => {
     const fetchUserData = async () => {
       if (!currentUser) return;
@@ -42,6 +75,15 @@ const ProfilePage = () => {
     fetchUserData();
   }, [currentUser, setValue]);
 
+
+  /**
+   * Updates the user profile with the new data
+   * @async
+   * @function onSubmit
+   * @param {Object} data - Form data to update the user profile
+   * @returns {Promise<void>} Updates the user profile and displays a success message
+   * 
+  */
   const onSubmit = async (data) => {
     if (!currentUser) return;
     try {
@@ -59,6 +101,12 @@ const ProfilePage = () => {
     }
   };
 
+  /**
+   * Deletes the user account and navigates to the login page
+   * @async
+   * @function handleDelete
+   * @returns {Promise<void>} Deletes the user account and navigates to the login page
+  */
   const handleDelete = async () => {
     if (!currentUser) return;
     if (window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {

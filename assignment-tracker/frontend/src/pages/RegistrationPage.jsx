@@ -8,7 +8,14 @@ import {registerUser } from '../services/userService';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
-
+/**
+ * Validate the form fields of a user registration
+ * username be a string and required
+ * email be a string, a valid email address and required
+ * password be a string, at least 6 characters and required
+ * confirmPassword be a string, match password and required
+ * @type {Yup.ObjectSchema} Validation schema for username, email, password and confirmPassword
+ */
 const schema = yup.object().shape({
     username: yup.string().required('Username is required'),
     email: yup.string().email('Invalid email').required('Email is required'),
@@ -18,6 +25,11 @@ const schema = yup.object().shape({
       .required('Confirm password is required'),
   });
 
+/**
+ * The registration form component that allows users to register
+ * @component
+ * @returns {JSX.Element} The rendered RegistrationForm component
+*/
 const RegistrationForm = () => {
     const [registrationErrors, setRegistrationErrors] = useState([]);
     const { register, handleSubmit, formState: { errors }} = useForm({
@@ -25,10 +37,13 @@ const RegistrationForm = () => {
     });
     const navigate = useNavigate();
 
-
+    /**
+     * Submits the registration form data to create a new user
+     * @param {object} data 
+     * 
+     * @returns {Promise<void>}
+     */
     const onSubmit = async (data) => {
-        //const { username, email, password } = data;
-
         try {
             const userCredential = await createUserWithEmailAndPassword(
                 auth, 
@@ -36,13 +51,10 @@ const RegistrationForm = () => {
                 data.password);
             const user = userCredential.user;
             const idToken = await user.getIdToken();
-            console.log("User registered:", user);
             await registerUser({ username: data.username, email: data.email}, idToken );
             navigate('/login');
-            //reset(); // Reset the form after successful registration
         } catch (error) {
             setRegistrationErrors([error.message]);
-            console.log("Error registering user:", error.message);
         }
     };
 

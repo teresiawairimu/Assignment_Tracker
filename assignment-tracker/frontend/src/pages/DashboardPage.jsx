@@ -7,22 +7,39 @@ import { FaPlus, FaEdit, FaTrash, FaCheck } from 'react-icons/fa';
 import { Form, Button, Row, Col, Container, ListGroup } from 'react-bootstrap';
 
 
-
+/**
+ * DashboardPage component displays a list of assignments and allows the user to create a new assignment, edit an assignment, delete an assignment, and mark an assignment as completed.
+ * 
+ * @component
+ * @returns {JSX.Element} The rendered DashboardPage component
+ */
 const DashboardPage = () => {
-    const [assignments, setAssignments] = useState([]);
-    const [completedAssignments, setCompletedAssignments] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const { currentUser } = useAuth();
-    const navigate = useNavigate();
+  const [assignments, setAssignments] = useState([]);
+  const [completedAssignments, setCompletedAssignments] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const { currentUser } = useAuth();
+  const navigate = useNavigate();
 
-    const formatDate = (timestamp) => {
+
+  /**
+   * Formats a date object to a string
+   * @param {date} timestamp  
+   * @returns {string} The formatted date
+   */
+  const formatDate = (timestamp) => {
         if (!timestamp || !timestamp._seconds) return 'No due date';
         const date = new Date(timestamp._seconds * 1000);
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         return new Date(date).toLocaleDateString(undefined, options);
     };
 
+    /**
+     * Fetches assignments from the database and sets the assignments state
+     * @async
+     * @function fetchAssignments
+     * @returns {Promise<void>}  Sets the asignments state
+     */
     useEffect(() => {
         const fetchAssignments = async () => {
             if (!currentUser) return;
@@ -31,14 +48,15 @@ const DashboardPage = () => {
                 setError(null);
                 const idToken = await currentUser.getIdToken();
                 const data = await getAssignments(currentUser.uid, idToken);
-                console.log('assignment data:', data);
-                const completedAssignments = data.filter((assignment) => assignment.status === 'completed');
+                 const completedAssignments = data.filter((assignment) => assignment.status === 'completed');
+                const incompleteAssignments = data.filter((assignment) => assignment.status !== 'completed');
                 setCompletedAssignments(completedAssignments);
-                setAssignments(data);
+                setAssignments(incompleteAssignments);
             } catch (error) {
                 console.error(error);
                 if (error.response && error.response.status === 404) {
                     setAssignments([]);
+                    setCompletedAssignments([]);
                 } else {
                     setError('Failed to fetch assignments. Please try again later')
                 }
@@ -49,6 +67,12 @@ const DashboardPage = () => {
         fetchAssignments();
     }, [currentUser]);
 
+    /**
+     * Deletes an assignment from the database and removes it from the assignments state
+     * @async
+     * @param {string} - assignmentId 
+     * @returns {Promise<void>}  Deletes the assignment from the database and removes it from the assignments state
+     */
     const handleDelete = async (assignmentId) => {
         const confirmDelete = window.confirm('Are you sure you want to delete this assignment?');
         if (!confirmDelete) return;
@@ -64,13 +88,23 @@ const DashboardPage = () => {
         }
     }
 
+    /**
+     * Moves an assignment to the completed status in the database and updates the assignments state
+     * @async
+     * @param {string} - assignmentId
+     * @param {string} - newListStatus
+     * @returns {Promise<void>}  Moves the assignment to the completed status in the database and updates the assignments state
+    */
     const handleComplete = async (assignmentId, newListStatus) => {
         try {
             const idToken = await currentUser.getIdToken();
-            await moveAssignment(currentUser.uid, assignmentId, newListStatus, idToken);
+            await moveAssignment(currentUser.uid, assignmentId, 'completed', idToken);
             const completedAssignment = assignments.find((assignment) => assignment.id === assignmentId);
-            setAssignments(assignments.filter((assignment) => assignment.id !== assignmentId));
-            setCompletedAssignments([...completedAssignments, completedAssignment]);
+            if (completedAssignment) {
+                completedAssignment.status = 'completed';
+                setAssignments(assignments.filter((assignment) => assignment.id !== assignmentId));
+                setCompletedAssignments([...completedAssignments, completedAssignment]);
+            }
         } catch (error) {
             console.error(error);
             setError('Failed to complete assignment. Please try again later');

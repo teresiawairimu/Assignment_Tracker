@@ -35,7 +35,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "eject": "react-scripts eject",
-    "test": "jest"
+    "test": "jest --config=jest.config.js"
   },
   "proxy": "http://localhost:3000",
   "eslintConfig": {
@@ -61,18 +61,13 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@babel/preset-env": "^7.25.4",
     "@babel/preset-react": "^7.24.7",
+    "@eslint/js": "^9.10.0",
     "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^16.0.1",
     "babel-jest": "^29.7.0",
+    "globals": "^15.9.0",
     "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "whatwg-fetch": "^3.6.20"
-  },
-  "jest": {
-    "transform": {
-      "^.+\\.(js|jsx)$": "babel-jest"
-    },
-    "transformIgnorePatterns": [
-      "node_modules/(?!(react-native|react-router-dom|react-bootstrap)/)"
-    ]
   }
 }

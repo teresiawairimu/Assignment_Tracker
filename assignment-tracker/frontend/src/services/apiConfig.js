@@ -1,3 +1,11 @@
-const api_base_url = "https://rocky-temple-55866-fb402add5e56.herokuapp.com";
+/**
+ * @file apiConfig.js
+ * @summary Contains the base URL for the API
+ * @description This file contains the base URL for the API. This URL is used in all other services to make requests to the API.
+ * @exports api_base_url
+ * @constant {string} api_base_url - The base URL for the API
+ * @example import api_base_url from './apiConfig';
+ */
+const api_base_url = "http://localhost:3000";
 
 export default api_base_url;

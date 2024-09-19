@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import LogInPage from './LogInPage';
 import { BrowserRouter as Router } from 'react-router-dom'; 
 
@@ -13,6 +14,14 @@ jest.mock('../firebaseConfig', () => ({
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useNavigate: () => jest.fn(),
+}));
+
+jest.mock('react-hook-form', () => ({
+  useForm: () => ({
+    register: jest.fn(),
+    handleSubmit: jest.fn(),
+    formState: { errors: {} }, 
+  }),
 }));
 
 
@@ -29,7 +38,7 @@ describe('LogInPage', () => {
     renderWithRouter(<LogInPage />);
 
     // Check if the page title is rendered
-    const pageTitle = screen.getByText(/login/i);
+    const pageTitle = screen.getByRole('heading', {name: /login/i});
     expect(pageTitle).toBeInTheDocument();
 
     // Check if email input is rendered
