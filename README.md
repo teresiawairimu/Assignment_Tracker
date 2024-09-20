@@ -117,12 +117,6 @@ npm install
 node app.js
 ```
 
-## About me
-
-Hi! I am a full-stack web developer with hands-on experience in technologies like ReactJS, Firebase, and Node.js. 
-I’m passionate about building efficient web applications and continuously learning new tools to improve my skills.
-This project showcases my ability to apply what I’ve learned in real-world scenarios. 
-I’m eager to contribute to new challenges and grow as a developer while delivering value to the team.
 
 
 ---
