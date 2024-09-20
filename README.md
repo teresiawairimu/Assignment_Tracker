@@ -21,11 +21,10 @@ Assignment-tracker helps students manage their assignments by providing a site w
 
 ## Table of Contents
 - [Features](#features)
-- [About Project](#about-project)
 - [Screenshots](#screenshots)
 - [Technologies Used](#technologies-used)
 - [Getting Started](#getting-started)
-- [About Me](#about-me)
+
 
 
 
@@ -54,14 +53,6 @@ Assignment-tracker helps students manage their assignments by providing a site w
 - 📅 Due date reminders
   The deadline notification feature sends alerts to users when assignment deadlines are approaching.
   Users receive notifications via email reminding them of upcoming due dates, helping them stay on track and meet deadlines. 
-
-## About Project
-
-I fell ill while in graduate school and was hospitalized for a few days. The recovery took a few more days, so I was unable to attend classes or submit assignments. I was advised to use task management to organize my assignments and prioritize them based on deadlines. This project was developed as a way to make prioritizing assignments easier. I also wanted to learn about the technologies involved, and this project is being submitted as part of the ALX Software Engineering Program's Portfolio Project.
-
-- *Twitter: https://x.com/nimmotess?t=_5vxKTYCBVnQTRmvlNVJEw&s=09*
-- *LinkedIn: https://www.linkedin.com/in/teresia-nduati-642ba2128/*
-- *Github: https://github.com/teresiawairimu*
 
 ## Screenshots
 ![Homepage](https://github.com/teresiawairimu/Assignment_Tracker/blob/main/assignment-tracker/frontend/src/assets/images/homepage.png)
