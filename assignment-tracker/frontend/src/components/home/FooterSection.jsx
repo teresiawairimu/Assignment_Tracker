@@ -2,6 +2,11 @@ import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
+/**
+ * The footer section
+ * @module FooterSection
+ * @type {Function}
+*/
 const FooterSection = () => {
     return (
         <Container fluid className="bg-body-secondary text-center mt-5">
