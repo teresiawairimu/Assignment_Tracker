@@ -12,10 +12,7 @@
 Assignment-tracker helps students manage their assignments by providing a site where they can upload their assignment titles and get notified about upcoming deadlines.
 
 
-## ## [🚀 Live Demo](https://portfolio-project-7c952.web.app/)     ## ## [Blog Post](https://medium.com/@nduatiteresia82/part-one-of-the-10-000-hours-rule-in-full-stack-web-development-865028b97852/)     ## ## [Author's LinkedIn](https://www.linkedin.com/in/teresia-nduati-642ba)
-
-
-
+## ## [🚀 Live Demo](https://portfolio-project-7c952.web.app/)     ## ## [Blog Post](https://medium.com/@nduatiteresia82/part-one-of-the-10-000-hours-rule-in-full-stack-web-development-865028b97852/)     ## ## [Author's LinkedIn](https://www.linkedin.com/in/teresia-nduati-642ba2128/)
 
 
 
@@ -23,6 +20,7 @@ Assignment-tracker helps students manage their assignments by providing a site w
 - [Screenshots](#screenshots)
 - [Technologies Used](#technologies-used)
 - [Getting Started](#getting-started)
+- [Related Projects](#related-projects)
  
 
 ## Screenshots
@@ -78,7 +76,9 @@ cd backend
 npm install
 node app.js
 ```
-
+## Related Projects
+## ## [Landing Page](https://github.com/teresiawairimu/assignment-tracker-landing-page)
+The landing page provides an overview of what the project is about.
 
 
 ---
