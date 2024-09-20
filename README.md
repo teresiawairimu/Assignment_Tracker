@@ -23,7 +23,7 @@ Assignment-tracker helps students manage their assignments by providing a site w
 - [Related Projects](#related-projects)
  
 
-## Screenshots
+## Screenshot
 ![Homepage](https://github.com/teresiawairimu/Assignment_Tracker/blob/main/assignment-tracker/frontend/src/assets/images/homepage.png)
 
 
