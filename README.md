@@ -12,7 +12,7 @@
 Assignment-tracker helps students manage their assignments by providing a site where they can upload their assignment titles and get notified about upcoming deadlines.
 
 
-## ## [🚀 Live Demo](https://portfolio-project-7c952.web.app/)  ## ## [Blog Post](https://medium.com/@nduatiteresia82/part-one-of-the-10-000-hours-rule-in-full-stack-web-development-865028b97852/)  ## ## [Author's LinkedIn](https://www.linkedin.com/in/teresia-nduati-642ba)
+## ## [🚀 Live Demo](https://portfolio-project-7c952.web.app/)     ## ## [Blog Post](https://medium.com/@nduatiteresia82/part-one-of-the-10-000-hours-rule-in-full-stack-web-development-865028b97852/)     ## ## [Author's LinkedIn](https://www.linkedin.com/in/teresia-nduati-642ba)
 
 
 
