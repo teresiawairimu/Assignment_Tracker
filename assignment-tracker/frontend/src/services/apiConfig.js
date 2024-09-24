@@ -6,6 +6,6 @@
  * @constant {string} api_base_url - The base URL for the API
  * @example import api_base_url from './apiConfig';
  */
-const api_base_url = "http://localhost:3000";
+const api_base_url = "https:localhost:3000";
 
 export default api_base_url;
