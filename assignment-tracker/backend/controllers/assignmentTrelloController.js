@@ -18,7 +18,7 @@ const createBoard = async (boardName) => {
   try {
     const response = await fetch(url, { method: 'POST' });
     if (!response.ok) {
-      throw new Error('Error creating board:', response.statusText);
+      throw new Error(`Error creating board:, ${response.statusText}`);
     }
     const boardData = await response.json();
     return boardData.id;
@@ -48,7 +48,7 @@ const createList = async (listName, boardId) => {
   try {
     const response = await fetch(url, { method: 'POST' });
     if (!response.ok) {
-      throw new Error('Error creating list:', response.statusText);
+      throw new Error(`Error creating list:, ${response.statusText}`);
     }
     const listData = await response.json();
     return listData.id

@@ -40,6 +40,7 @@ const getUserById = async (id) => {
   try {
     const userDoc = await db.collection('users').doc(id).get();
     if (!userDoc.exists) {
+      console.error("User not found")
       throw new Error('User not found');
     }
       return userDoc.data();
